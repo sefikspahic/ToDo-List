@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 function TodoForm(props) {
   const [input, setInput] = useState('');
+  const [requiredMessage, setMessage] = useState("");
 
   const inputRef = useRef(null);
 
@@ -14,14 +15,19 @@ function TodoForm(props) {
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
 
+    e.preventDefault();
+  if (!input) {
+      setMessage('*This field is required');
+  } 
+  else {
+    setMessage('');
     props.onSubmit({
       id: Math.floor(Math.random() * 10000),
       text: input
     });
     setInput('');
-  };
+  }};
 
   return (
     <form onSubmit={handleSubmit} className='todo-form'>
@@ -34,9 +40,12 @@ function TodoForm(props) {
             className='todo-input'
             ref={inputRef}
           />
+      <div className='clormesage'> {requiredMessage}</div>
           <button onClick={handleSubmit} className='todo-button'>
             Add todo
           </button>
+          
+          
     </form>
   );
 }
